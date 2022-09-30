@@ -1,0 +1,33 @@
+.result {
+  text-align: start;
+  padding: 20px;
+}
+.result p {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+.all-data {
+  position: sticky;
+  top: 50px;
+}
+.all-data button {
+  display: block;
+  margin: auto;
+  width: 232px;
+  height: 48px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 4px;
+}
+#clear {
+  background-color: #ff3030;
+}
+#clear:hover {
+  background-color: #bc0404;
+}
+#review {
+  background-color: #ff9900;
+}
+#review:hover {
+  background-color: #b06b04;
+}
