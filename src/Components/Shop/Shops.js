@@ -9,7 +9,7 @@ const Shops = () => {
     const [products, setProducts] = useState([])
     const [cart, setCart] = useState([])
     useEffect(() => {
-        fetch('https://raw.githubusercontent.com/ProgrammingHero1/ema-john-resources/main/fakeData/products.json')
+        fetch('products.json')
             .then(res => res.json())
             .then(data => setProducts(data))
     }, []);
