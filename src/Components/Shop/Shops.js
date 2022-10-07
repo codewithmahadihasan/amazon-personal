@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { addToDb, getStoreCart } from '../utilities/fakedb';
+import { addToDb, deleteShoppingCart, getStoreCart, removeFromDb } from '../utilities/fakedb';
 import Product from '../Product/Product';
 import Result from '../Result/Result';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 import './Shops.css'
+import { Link, useLoaderData } from 'react-router-dom';
 
 const Shops = () => {
-    const [products, setProducts] = useState([])
+    const products = useLoaderData()
     const [cart, setCart] = useState([])
-    useEffect(() => {
-        fetch('products.json')
-            .then(res => res.json())
-            .then(data => setProducts(data))
-    }, []);
+
     useEffect(() => {
         const storeCart = getStoreCart()
         const saveCart = []
@@ -26,6 +25,11 @@ const Shops = () => {
         }
         setCart(saveCart)
     }, [products])
+
+    const crearCard = () => {
+        setCart([])
+        deleteShoppingCart()
+    }
 
     const addToCard = (setProduct) => {
         console.log(setProduct)
@@ -57,7 +61,9 @@ const Shops = () => {
             </div>
             <div className='product-result'>
 
-                <Result cart={cart} ></Result>
+                <Result cart={cart} crearCard={crearCard} >
+                    <Link to={'/order'}> <button id='review'>Review Order <FontAwesomeIcon icon={faArrowRight} /> </button></Link>
+                </Result>
             </div>
         </div>
     );

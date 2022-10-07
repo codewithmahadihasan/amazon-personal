@@ -1,10 +1,13 @@
 import React from 'react';
 import "./Result.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, } from '@fortawesome/free-solid-svg-icons'
 
-const Result = (props) => {
-    const { cart } = props
+
+
+
+const Result = (props,) => {
+    const { cart, crearCard, children } = props
     let total = 0;
     let shipping = 0;
     let quantity = 0
@@ -19,7 +22,7 @@ const Result = (props) => {
 
     return (
         <div className='all-data'>
-            <h2>
+            <h2 className='text-2xl font-bold text-center'>
                 Order Summary
             </h2>
             <div className='result'>
@@ -29,8 +32,11 @@ const Result = (props) => {
                 <p>Tax: ${tax.toFixed(2)}</p>
                 <h4>Grand Total: ${all.toFixed(2)}</h4>
             </div>
-            <button id='clear'>Clear Card </button>
-            <button id='review'>Review Order</button>
+            <button onClick={crearCard} id='clear'>Clear Card <FontAwesomeIcon icon={faTrash} /></button>
+            {
+                children
+            }
+
         </div>
 
     );
