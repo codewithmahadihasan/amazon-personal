@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Logo from '../images//Logo.svg'
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { Auth } from '../Context/AuthContext';
 const Nav = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { user, logOut } = useContext(Auth)
     return (
 
-        <div>
+        <div className='sticky top-0'>
 
 
             <div className="bg-gray-900">
-                <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+                <div className="px-4   py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
                     <div className="relative flex items-center justify-between">
-                        <Link
+                        <NavLink
                             to="/"
                             aria-label="Amazon"
                             title="Amazon"
@@ -19,50 +21,79 @@ const Nav = () => {
                         >
                             <img src={Logo} alt="" />
 
-                        </Link>
+                        </NavLink>
                         <ul className="flex items-center hidden space-x-8 lg:flex">
                             <li>
-                                <Link
+                                <NavLink
                                     to="/shop"
                                     aria-label="Our product"
                                     title="Our product"
-                                    className="font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400"
+                                    className={({ isActive }) => {
+                                        return isActive ? 'underline text-sky-500  underline-offset-8 font-medium tracking-wide  transition-colors duration-200 hover:text-teal-accent-400' : 'font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400';
+
+                                    }}
                                 >
                                     Shop
-                                </Link>
+                                </NavLink>
                             </li>
                             <li>
-                                <Link
+                                <NavLink
                                     to="/order"
                                     aria-label="Our product"
                                     title="Our product"
-                                    className="font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400"
+                                    className={({ isActive }) => {
+                                        return isActive ? 'underline text-sky-500  underline-offset-8 font-medium tracking-wide transition-colors duration-200 hover:text-teal-accent-400' : 'font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400';
+
+                                    }}
                                 >
                                     Order
-                                </Link>
+                                </NavLink>
                             </li>
 
                             <li>
-                                <Link
+                                <NavLink
                                     to="/manageinventory"
                                     aria-label="Product pricing"
                                     title="Product pricing"
-                                    className="font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400"
+                                    className={({ isActive }) => {
+                                        return isActive ? 'underline text-sky-500  underline-offset-8 font-medium tracking-wide  transition-colors duration-200 hover:text-teal-accent-400' : 'font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400';
+
+                                    }}
                                 >
                                     Manage Inventory
-                                </Link>
+                                </NavLink>
                             </li>
 
-                            <li>
-                                <Link
-                                    to="/login"
-                                    className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
-                                    aria-label="Sign up"
-                                    title="Sign up"
-                                >
-                                    Log In
-                                </Link>
-                            </li>
+
+
+
+                            {user ? <button onClick={logOut} className=' hover:text-sky-500 text-white font-bold underline-offset-8 font-medium tracking-wide transition-colors duration-200 hover:text-teal-accent-400'>Sign Out</button> : <ul className='flex gap-8'>
+                                <li>
+                                    <NavLink
+                                        to="/login"
+                                        className={({ isActive }) => {
+                                            return isActive ? 'underline text-sky-500  underline-offset-8 font-medium tracking-wide transition-colors duration-200 hover:text-teal-accent-400' : 'font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400';
+
+                                        }}
+                                    >
+                                        Log In
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to="/registration"
+                                        className={({ isActive }) => {
+                                            return isActive ? 'underline text-sky-500  underline-offset-8 font-medium tracking-wide transition-colors duration-200 hover:text-teal-accent-400' : 'font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400';
+
+                                        }}
+                                    >
+                                        Sign up
+                                    </NavLink>
+                                </li>
+                            </ul>}
+
+                            <li className='text-xl font-bold text-sky-500'>{user?.displayName}</li>
+
                         </ul>
                         <div className="lg:hidden">
                             <button
@@ -91,7 +122,7 @@ const Nav = () => {
                                     <div className="p-5 bg-gray-700 border rounded shadow-sm">
                                         <div className="flex items-center justify-between mb-4">
                                             <div>
-                                                <Link
+                                                <NavLink
                                                     to="/"
                                                     aria-label="Company"
                                                     title="Company"
@@ -99,7 +130,7 @@ const Nav = () => {
                                                 >
                                                     <img className='hover:bg-blue-400' src={Logo} alt="" />
 
-                                                </Link>
+                                                </NavLink>
                                             </div>
                                             <div >
                                                 <button
@@ -120,64 +151,64 @@ const Nav = () => {
                                         <nav>
                                             <ul className="space-y-4  ">
                                                 <li>
-                                                    <Link
+                                                    <NavLink
                                                         to="/shop"
                                                         aria-label="Our product"
                                                         title="Our product"
                                                         className="font-medium tracking-wide text-white transition-colors duration-200 hover:text-deep-purple-accent-400"
                                                     >
                                                         Shop
-                                                    </Link>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <Link
+                                                    <NavLink
                                                         to="/order"
                                                         aria-label="Our product"
                                                         title="Our product"
                                                         className="font-medium tracking-wide text-white transition-colors duration-200 hover:text-deep-purple-accent-400"
                                                     >
                                                         Order
-                                                    </Link>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <Link
+                                                    <NavLink
                                                         to="/orderrevew"
                                                         aria-label="Product pricing"
                                                         title="Product pricing"
                                                         className="font-medium tracking-wide text-white transition-colors duration-200 hover:text-deep-purple-accent-400"
                                                     >
                                                         Order Reverw
-                                                    </Link>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <Link
+                                                    <NavLink
                                                         to="/about"
                                                         aria-label="About us"
                                                         title="About us"
                                                         className="font-medium tracking-wide text-white transition-colors duration-200 hover:text-deep-purple-accent-400"
                                                     >
                                                         About
-                                                    </Link>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <Link
+                                                    <NavLink
                                                         to="/manageinventory"
                                                         aria-label="About us"
                                                         title="About us"
                                                         className="font-medium tracking-wide text-white transition-colors duration-200 hover:text-deep-purple-accent-400"
                                                     >
                                                         Inventory
-                                                    </Link>
+                                                    </NavLink>
                                                 </li>
                                                 <li>
-                                                    <Link
+                                                    <NavLink
                                                         to="login"
                                                         className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-purple-400 hover:bg-purple-700 focus:shadow-outline focus:outline-none"
                                                         aria-label="Sign up"
                                                         title="Sign up"
                                                     >
                                                         Log In
-                                                    </Link>
+                                                    </NavLink>
                                                 </li>
                                             </ul>
                                         </nav>

@@ -1,40 +1,51 @@
 import { GoogleAuthProvider } from 'firebase/auth';
-import React, { useContext } from 'react';
-import { Link, useLocation, useNavigate, } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Auth } from './Context/AuthContext';
 
 
-
-const Login = () => {
-    const { loginWithEamil, Google, } = useContext(Auth)
-    let location = useLocation();
-
-
+const SignUp = () => {
+    const { RegistrationInEmail, setName, verify, Google, forgetPass } = useContext(Auth)
+    const [passerror, setPasserror] = useState()
     const navigate = useNavigate()
-    const data = location.state?.from?.pathname || "/";
+
+
     const fromButton = (event) => {
         event.preventDefault();
         const from = event.target
-
+        const name = from.name.value
         const email = from.email.value
         const password = from.password.value
-        loginWithEamil(email, password)
-            .then((userCredential) => {
-                Swal.fire('Login Successful',
-                    'Please Verify your email.',
-                    'success')
 
-            })
-        navigate(data, { replace: true })
-            .catch((error) => {
-                const message = error.message.split("Error")
-                Swal.fire(
-                    `${message.slice(1, 500)}`,
-                    error,
-                    'error'
-                )
-            });
+        if (password.length >= 6) {
+            RegistrationInEmail(email, password)
+                .then((result) => {
+                    verify()
+                    setName(name)
+                    setPasserror('')
+                    Swal.fire(
+                        'Your registration is complete',
+                        'Please Verify your email.',
+                        'success'
+                    )
+                })
+
+                .catch((error) => {
+                    const message = error.message.split("Error")
+                    Swal.fire(
+                        `${message.slice(1, 500)}`,
+                        error,
+                        'error'
+                    )
+                });
+
+
+        }
+        else {
+            setPasserror('Please enter six digit password')
+        }
+
 
     }
 
@@ -47,7 +58,6 @@ const Login = () => {
                     'Login Successful',
                     'Please Verify your email.',
                     'success')
-                navigate(data, { replace: true })
                 // ...
             })
 
@@ -63,14 +73,13 @@ const Login = () => {
 
     return (
         <div>
-
             <div className="relative">
                 <img
-                    src="https://img.freepik.com/free-vector/network-mesh-wire-digital-technology-background_1017-27428.jpg?w=1380&t=st=1666091267~exp=1666091867~hmac=c841b97a108984c5d21ab1dc9c47016a78c287009f77267e25294756220efd00"
-                    className="absolute  object-cover bg-cover w-full h-full "
+                    src="https://img.freepik.com/free-photo/abstract-futuristic-background-with-3d-design_1361-3532.jpg?w=1480&t=st=1666091651~exp=1666092251~hmac=db94ca2f721f3d9564ea543dcf22ffb04163c5f3b3740160af6f7c3c810ef347"
+                    className="absolute  object-cover bg-cover w-full h-full"
                     alt=""
                 />
-                <div className="relative pb-6  bg-opacity-80 bg-gray-900">
+                <div className="relative pb-8 bg-opacity-70 bg-gray-900">
                     <svg
                         className="absolute inset-x-0 bottom-0 text-gray-800 w-full"
                         viewBox="0 0 1160 163"
@@ -108,30 +117,32 @@ const Login = () => {
                                 </Link>
                             </div>
                             <div className='lg:w-96 text-blue-200'>
-                                <div className="w-full shadow-xl hover:shadow-sky-600  shadow-teal-800  max-w-md p-8 space-y-3 rounded-xl bg-gray-900 text-gray-100">
-                                    <h1 className="text-2xl font-bold text-center">Login</h1>
-                                    <form onSubmit={fromButton} action="" className="space-y-6 ng-untouched ng-pristine ng-valid">
-                                        <div className="space-y-1 text-sm">
-                                            <label className="block text-gray-400">E-mail</label>
-                                            <input type="email" name="email" id="email" placeholder="E-mail" required className="w-full px-4 py-3  rounded-md border-gray-700 bg-gray-100 text-gray-900 focus:border-violet-400" />
+                                <div className="w-full  max-w-md  shadow-xl shadow-teal-800 hover:shadow-sky-600  p-8  rounded-xl bg-gray-900 text-gray-100">
+                                    <h1 className="text-2xl font-bold text-center">Sign Up</h1>
+                                    <form onSubmit={fromButton} action="" className="space-y-3 ng-untouched ng-pristine ng-valid">
+                                        <div className=" text-sm">
+                                            <label className="block text-gray-400">Name</label>
+                                            <input type="text" name="name" id="name" placeholder="Name" required className="w-full px-4 py-3 rounded-md border-gray-700 bg-gray-200 text-gray-900 focus:border-violet-400" />
                                         </div>
-                                        <div className="space-y-1 text-sm">
+                                        <div className=" text-sm">
+                                            <label className="block text-gray-400">Username</label>
+                                            <input type="email" name="email" id="email" placeholder="E-mail" required className="w-full px-4 py-3 rounded-md border-gray-700 bg-gray-200 text-gray-900 focus:border-violet-400" />
+                                        </div>
+                                        <div className=" text-sm">
+
                                             <label className="block text-gray-400">Password</label>
-                                            <input type="password" name="password" id="password" placeholder="Password" required className="w-full px-4 py-3 rounded-md border-gray-700 bg-gray-100 text-gray-900 focus:border-violet-400" />
-                                            <div className="flex justify-end text-xs text-gray-400">
-                                                <Link className="hover:text-red-300" rel="noopener noreferrer" to="#">Forgot Password?</Link>
-                                            </div>
+                                            <input type="password" name="password" id="password" placeholder="Password" required className="w-full px-4 py-3 rounded-md border-gray-700 bg-gray-200 text-gray-900 focus:border-violet-400 mb-3" />
+                                            <p className='text-xs text-red-600'>{passerror}</p>
                                         </div>
-                                        <button type='submit' className="block w-full p-3 text-center rounded-sm text-gray-900 bg-violet-400 hover:bg-violet-600">Sign in</button>
-                                        <p className="text-xs mt-10 text-center sm:px-6 text-gray-400">Don't have an account?
-                                            <Link rel="noopener noreferrer" to="/registration" className="hover:underline  ml-2  text-gray-100">Sign up</Link>
+                                        <button type='submit' className="block w-full p-3 text-center rounded-sm text-gray-900 bg-violet-400 hover:bg-violet-600">Sign Up</button>
+                                        <p className="text-xs text-center sm:px-6 text-gray-400">Don't have an account?
+                                            <Link rel="noopener noreferrer" to="/login" className="hover:underline mt-10  ml-2  text-gray-100">Log in</Link>
                                         </p>
                                     </form>
-
-                                    <div className="flex items-center pt-4 space-x-1">
+                                    <div className="flex items-center mb-2  space-x-1">
                                         <div className="flex-1 h-px sm:w-16 bg-gray-700"></div>
                                         <p className="px-3 text-sm text-gray-400">or</p>
-                                        <div className="flex-1 h-px sm:w-16 bg-gray-700"></div>
+                                        <div className="flex-1 h-px sm:w-16 bg-gray-700 "></div>
                                     </div>
                                     <div className="flex justify-center space-x-4">
                                         <button onClick={googleButton} aria-label="Log in with Google " className="p-3 rounded-sm flex justify-center gap-3 block w-full p-3  rounded-sm border hover:bg-gray-800">
@@ -140,7 +151,10 @@ const Login = () => {
                                             </svg>
                                             <p>Continue with Google</p>
                                         </button>
+
+
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -148,8 +162,11 @@ const Login = () => {
                 </div>
             </div>
 
+
+
         </div>
+
     );
 };
 
-export default Login;
+export default SignUp;

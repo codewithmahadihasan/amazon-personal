@@ -1,5 +1,4 @@
 .result {
-  text-align: start;
   padding: 20px;
 }
 .result p {
@@ -8,7 +7,7 @@
 }
 .all-data {
   position: sticky;
-  top: 50px;
+  top: 90px;
 }
 .all-data button {
   display: block;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Cards = ({ product }) => {
-    console.log(product);
+
     const { img, stock, shipping, seller, ratings, price, name } = product
     return (
         <div>
